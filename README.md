@@ -19,8 +19,9 @@ NOTICE: CMake 3.1 or higher is required
 
 ## Usage
 
-	$ ./bin/sf6sketch
+	$ cd ./bin/; ./sf6sketch
 
+The command-line shown above is for sf6sketch; you can substitute [#] with a number ranging from 1~6 for any sketch version number in `cd ./bin/; ./sf[#]sketch`.
 We should feed two files to `sf6sketch` or `sf1sketch`. They are for insertion and deletion operations on items and query for them.
 Note that we can apply insertion/deletion many times on a specific item. 
 Item's frequency can be defined as # of insertions minus # of deletions.
