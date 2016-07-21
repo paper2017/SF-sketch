@@ -1,4 +1,4 @@
-#include "mcsketch.h"
+#include "sf6sketch.h"
 #ifdef SF6
 #include "memory.h"
 #include <stdlib.h>
