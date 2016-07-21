@@ -42,7 +42,7 @@ IF(SF5)
 ENDIF(SF5)
 
 IF(SF6)
-    ADD_DEFINITIONS(-DMC=1)
+    ADD_DEFINITIONS(-DSF6=1)
     set(SOURCE_FILES lib/BOBHash.c sf6sketch/sf6sketch.c sketch_config.c)
     add_executable(sf6sketch ${SOURCE_FILES} main.c)
 ENDIF(MC)
