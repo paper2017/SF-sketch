@@ -13,7 +13,7 @@ Here, we propose a new sketch, ***the SF-sketch***, that has significantly highe
 	$ sh build.sh
     
 There is an example in `main.c`, which shows the basic usage of ***the SF-sketch***. 
-We also implement a series of **slim-fat sketches** (i.e. the SF1, SF2, SF3, SF4 and SF5 sketches) that lead to our final ***SF6-sketch***. For example, using `sh build.sh SF1` for our first version of slim-fat sketch (**the SF1-sketch**), we can get executable file: `sf1sketch` in `./bin`, while using `sh build.sh` or `sh build.sh SF6`, we get `sf6sketch` in `./bin`.
+We also implement a series of **slim-fat sketches** (i.e. the SF1, SF2, SF3 and SF4 sketches) that lead to our final ***SF_F-sketch***. For example, using `sh build.sh SF1` for our first version of slim-fat sketch (**the SF1-sketch**), we can get executable file: `sf1sketch` in `./bin`, while using `sh build.sh` or `sh build.sh SF6`, we get `sf6sketch` in `./bin`.
 
 NOTICE: CMake 3.1 or higher is required
 
