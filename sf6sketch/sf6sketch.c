@@ -1,5 +1,5 @@
-#include "sf6sketch.h"
-#ifdef SF6
+#include "sffsketch.h"
+#ifdef SFF
 #include "memory.h"
 #include <stdlib.h>
 static mcsketch sketch;
@@ -282,4 +282,4 @@ size_t query(const unsigned char * str, size_t len)
     }
     return min;
 }
-#endif // SF6
+#endif // SFF
