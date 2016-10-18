@@ -13,15 +13,15 @@ Here, we propose a new sketch, ***the SF-sketch***, that has significantly highe
 	$ sh build.sh
     
 There is an example in `main.c`, which shows the basic usage of ***the SF-sketch***. 
-We also implement a series of **slim-fat sketches** (i.e. the SF1, SF2, SF3 and SF4 sketches) that lead to our final ***SF_F-sketch***. For example, using `sh build.sh SF1` for our first version of slim-fat sketch (**the SF1-sketch**), we can get executable file: `sf1sketch` in `./bin`, while using `sh build.sh` or `sh build.sh SF6`, we get `sf6sketch` in `./bin`.
+We also implement a series of **slim-fat sketches** (i.e. the SF1, SF2, SF3 and SF4 sketches) that lead to our final ***SFF-sketch***. For example, using `sh build.sh SF1` for our first version of slim-fat sketch (**the SF1-sketch**), we can get executable file: `sf1sketch` in `./bin`, while using `sh build.sh` or `sh build.sh SFF`, we get `sf6sketch` in `./bin`.
 
 NOTICE: CMake 3.1 or higher is required
 
 ## Usage
 
-	$ cd ./bin/; ./sf6sketch
+	$ cd ./bin/; ./sffsketch
 
-The command-line shown above is for sf6sketch; you can substitute [#] with a number ranging from 1~6 for any sketch version number in `cd ./bin/; ./sf[#]sketch`.
+The command-line shown above is for sffsketch; you can substitute [#] with a number ranging from 1,2,3,4,5,f for any sketch version number in `cd ./bin/; ./sf[#]sketch`.
 
 We should feed two files to `sf[#]sketch`. They are for insertion and deletion operations on items and query for them.
 Note that we can apply insertion/deletion many times on a specific item. 
@@ -29,7 +29,7 @@ Item's frequency can be defined as # of insertions minus # of deletions.
 The default file name for operations is "operations.dat", while "queries.dat" for query. 
 In `./workload`, we prepare one example for using those sketches for you, which apply 10K operations on 1K distinct key-value items. 
 And "kv1K_op10K.bench" indicating real frequencies for items is shown in the folder `./workload`. 
-More complex methods in using `sf6sketch` can be found out by `./bin/sf6sketch -h` 
+More complex methods in using `sffsketch` can be found out by `./bin/sffsketch -h` 
 
 
 ## Workloads Generation
