@@ -51,4 +51,4 @@ In folder `othersketchs`, we also implement 4 well known sketches (***CMCU sketc
 
 	cd [sketch folder]; ./cmkae .; make
 	
-Usage of thoses sketches is the same as ***SF sketch***. Type `[sketch folder]/bin/[sketch] -h` to show usage.
+Usage of thoses sketches is the same as ***SF sketch***. Type `[sketch folder]/bin/[sketch] -h` to show specific usage.
