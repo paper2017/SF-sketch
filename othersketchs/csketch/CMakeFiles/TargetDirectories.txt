@@ -1,0 +1,3 @@
+/d/github/SF-sketch_2016-10-20/othersketchs/csketch/CMakeFiles/edit_cache.dir
+/d/github/SF-sketch_2016-10-20/othersketchs/csketch/CMakeFiles/rebuild_cache.dir
+/d/github/SF-sketch_2016-10-20/othersketchs/csketch/CMakeFiles/csketch.dir
