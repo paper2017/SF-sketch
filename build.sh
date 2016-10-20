@@ -15,7 +15,7 @@ elif [ "$VERSION"V == SF4V ];then
     echo building for slim-fat sketch version 4
     cmake -DSF1=OFF -DSF2=OFF -DSF3=OFF -DSF4=ON -DSFF=OFF .
 elif [ "$VERSION"V == SFFV ] || [ "$VERSION"V == V ];then
-    echo building for slim-fat sketch version 6
+    echo building for SFF: The Final Version
     cmake -DSF1=OFF -DSF2=OFF -DSF3=OFF -DSF4=OFF -DSFF=ON .
 else
     echo "usage:  sh ./build.sh [SFF|SF1|SF2|SF3|SF4]"

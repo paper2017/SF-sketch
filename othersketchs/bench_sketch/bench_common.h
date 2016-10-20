@@ -1,6 +1,6 @@
 #ifndef _BENCH_COMMON_H_
 #define _BENCH_COMMON_H_
-#include "../fcsketch/sketch_config.h"
+//#include "../fcsketch/sketch_config.h"
 #include "bench_config.h"
 
 #define UPDATE_FILE "operations.dat"
