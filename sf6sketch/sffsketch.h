@@ -1,9 +1,9 @@
-#ifndef SF6_SKETCH_H
-#define SF6_SKETCH_H
+#ifndef SFF_SKETCH_H
+#define SFF_SKETCH_H
 
 #include "../sketch_config.h"
 
-#ifdef SF6
+#ifdef SFF
 
 typedef sketch_l sketch_r;
 
@@ -31,5 +31,5 @@ typedef struct mcsketch_t {
     size_t aux_minr;
 } mcsketch;
 
-#endif //SF6
-#endif // SF6_SKETCH_H
+#endif //SFF
+#endif // SFF_SKETCH_H

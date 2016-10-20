@@ -13,25 +13,29 @@ Here, we propose a new sketch, ***the SF-sketch***, that has significantly highe
 	$ sh build.sh
     
 There is an example in `main.c`, which shows the basic usage of ***the SF-sketch***. 
-We also implement a series of **slim-fat sketches** (i.e. the SF1, SF2, SF3, SF4 and SF5 sketches) that lead to our final ***SF_6-sketch***. For example, using `sh build.sh SF1` for our first version of slim-fat sketch (**the SF1 sketch**), we can get executable file: `sf1sketch` in `./bin`, while using `sh build.sh` or `sh build.sh SF6`, we get `sf6sketch` in `./bin`.
+We also implement a series of **slim-fat sketches** (i.e. the SF1, SF2, SF3 and SF4 sketches) that lead to our final ***SFF-sketch***. For example, using `sh build.sh SF1` for our first version of slim-fat sketch (**the SF1-sketch**), we can get executable file: `sf1sketch` in `./bin`, while using `sh build.sh` or `sh build.sh SFF`, we get `sf6sketch` in `./bin`.
+
+NOTICE: CMake 3.1 or higher is required
 
 ## Usage
 
-	$ ./bin/sf6sketch
+	$ cd ./bin/; ./sffsketch
 
-We should feed two files to `sf6sketch` or `sf1sketch`. They are for insertion and deletion operations on items and query for them.
+The command-line shown above is for sffsketch; you can substitute [#] with a number ranging from 1,2,3,4,5,f for any sketch version number in `cd ./bin/; ./sf[#]sketch`.
+
+We should feed two files to `sf[#]sketch`. They are for insertion and deletion operations on items and query for them.
 Note that we can apply insertion/deletion many times on a specific item. 
 Item's frequency can be defined as # of insertions minus # of deletions.
 The default file name for operations is "operations.dat", while "queries.dat" for query. 
 In `./workload`, we prepare one example for using those sketches for you, which apply 10K operations on 1K distinct key-value items. 
 And "kv1K_op10K.bench" indicating real frequencies for items is shown in the folder `./workload`. 
-More complex methods in using `sf6sketch` can be found out by `./bin/sf6sketch -h` 
+More complex methods in using `sffsketch` can be found out by `./bin/sffsketch -h` 
 
 
 ## Workloads Generation
 To test the performance of sketches in different scenarios, we harness [YCSB](https://github.com/brianfrankcooper/YCSB.git) to generate two kinds of workloads: **uniform** and **skewed ([zipfian](https://en.wikipedia.org/wiki/Zipf%27s_law))**.
 We also use [memcached](https://github.com/memcached/memcached.git) and the generated workloads to record the real frequency of each item as benchmarks.
-After that, we feed the generated workloads to our proposed MC sketch to record the estimation of itme frequency using the MC sketch.
+After that, we feed the generated workloads to our proposed SF-sketch to record the estimation of itme frequency using the SF-sketch.
 Then, we calculate the average relative error and empirical cumulative distribution function (CDF) of relative error using benchmarks and estimations.
 To compare the accuracy with other well known sketches (such as Count-min (CM) sketch, conservative update (CU) sketch, etc.), we can use the same method to get the average relative error and CDF.
 

@@ -22,7 +22,7 @@ fprintf(stdout, __VA_ARGS__);\
 
 #define MAX_ROW (MAX_PRIME / 2)
 
-#if (SF1 + SF2 + SF3 + SF4 + SF5 + MC != 1)
+#if (SF1 + SF2 + SF3 + SF4 + SFF != 1)
 #error "you must specify one and only one version"
 #endif
 #define COMPACT_COUNTER_L 1

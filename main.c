@@ -18,11 +18,8 @@
 #ifdef SF4
 #define QUERY_RESULT "sf4sketch_%d.out"
 #endif
-#ifdef SF5
-#define QUERY_RESULT "sf5sketch_%d.out"
-#endif
-#ifdef SF6
-#define QUERY_RESULT "sf6sketch_%d.out"
+#ifdef SFF
+#define QUERY_RESULT "sffsketch_%d.out"
 #endif
 /* type of each request */
 enum request_types {
@@ -149,7 +146,7 @@ static void requests_exec()
             if (type == INSERT_T) {
                 inc(key, key_len, delta);
             }
-#if (SF2 + SF3 + SF4 + SF5 + SF6 == 1)
+#if (SF2 + SF3 + SF4 + SFF == 1)
             else if (type == DELETE_T) {
                 dec(key, key_len, delta);
             }

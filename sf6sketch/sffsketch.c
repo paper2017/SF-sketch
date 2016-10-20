@@ -1,8 +1,8 @@
-#include "sf5sketch.h"
-#ifdef SF5
+#include "sffsketch.h"
+#ifdef SFF
 #include "memory.h"
 #include <stdlib.h>
-static sf5sketch sketch;
+static mcsketch sketch;
 static size_t ALIGN_SHIFT;
 bool init(size_t D, size_t WL, size_t Z, size_t bits_c)
 {
@@ -30,7 +30,6 @@ bool init(size_t D, size_t WL, size_t Z, size_t bits_c)
     sketch.Z = Z;
     sketch.bits_c = bits_c;
     sketch.max_c = (bits_c == MAX_BITS_C) ? SIZE_MAX : (((size_t)1 << bits_c) - 1);
-
     size_t length = 0, total = 0;
 
 //for right;
@@ -48,7 +47,7 @@ bool init(size_t D, size_t WL, size_t Z, size_t bits_c)
     sketch.right->D = D;
     sketch.right->W = sketch.WR;
     sketch.right->bits_c = bits_c;
-    sketch.right->max_c = sketch.max_c;
+    sketch.right->max_c = sketch.max_c; //(1 << bits_c) - 1;
     sketch.right->length = length;
     for (int i=0; i<sketch.D; i++) {
         sketch.right->counts[i] = (size_t *)(&sketch.right->counts[sketch.D]) + i * length;
@@ -79,10 +78,20 @@ bool init(size_t D, size_t WL, size_t Z, size_t bits_c)
 #if (COMPACT_COUNTER_L + COMPACT_COUNTER_R != 0 )
 static size_t get_cpt_c(size_t d, size_t w, size_t * counts[])
 {
+    // Desired counter bit range in row i: [lBit, hBit)
     size_t lBit = w * sketch.bits_c;
     size_t hBit = lBit + sketch.bits_c;
-    size_t lIndex = SZ_ALIGN(lBit) >> ALIGN_SHIFT;
+    // Which word lBit/(hBit-1) belongs to
+    size_t lIndex = SZ_ALIGN(lBit) >> ALIGN_SHIFT;//#define SZ_ALIGN(addr) ((addr) & (~0 << ALIGN_SHIFT))
     size_t hIndex = SZ_ALIGN(hBit - 1) >> ALIGN_SHIFT;
+    // Conceptually, counter bits are stored in a form similar
+    // to Big endian, eg. the most significant bit is lBit and
+    // the least significant bit is hBit. Also, we think that
+    // bits in each word are arranged in the same form. The
+    // physical memory arrangement is probably quite not like that,
+    // but it doesn't matter, as we will conform the same convention
+    // in setCounter. Therefore, hgap means the bit gap between hBit
+    // and the initial bit of next word.
     size_t hgap = ((hIndex + 1) << ALIGN_SHIFT) - hBit;
     // If lIndex == hIndex, fetch the counter from the single word.
     // Otherwise, fetch corresponding bits from the two words
@@ -174,37 +183,42 @@ static void set_lc(size_t d, size_t w, size_t val)
 static void inc_r(const unsigned char * str, size_t len, size_t delta)
 {
     size_t d = 0, w, counter;
+    size_t min = sketch.max_c;
     for (d = 0; d < sketch.D; ++d) {
         w = hash(d, str, len) % sketch.WR;
         size_t z = w / sketch.WL;
         w = w % sketch.WL;
         sketch.auxis[d].w = w;
+        w = w * sketch.Z + z;
+        counter = get_rc(d, w);
+        counter = (((sketch.right->max_c - delta) > counter) ? (counter + delta) : sketch.right->max_c);
+        set_rc(d, w, counter);
 
-        size_t max = 0;
-        for (int i = 0; i < sketch.Z; i++) {
-            counter = get_rc(d, w * sketch.Z + i);
-
-            if (i == z) {
-                counter = (((sketch.right->max_c - delta) > counter) ? (counter + delta) : sketch.right->max_c);
-                set_rc(d, w * sketch.Z + i, counter);
-            }
-            if (max < counter) {
-                max = counter;
-            }
+        if (min > counter) {
+            min = counter;
         }
-        sketch.auxis[d].c = max;
+
     }
+    sketch.aux_minr = min;
 }
 
 static void inc_l(size_t delta)
 {
     size_t d = 0;
-    size_t counter;
+    size_t minl = sketch.max_c, minr = sketch.aux_minr;
     for (d = 0; d < sketch.left->D; ++d) {
-        counter = get_lc(d, sketch.auxis[d].w);
-        assert(counter <= sketch.auxis[d].c);
-        if (counter < sketch.auxis[d].c) {
-            set_lc(d, sketch.auxis[d].w, sketch.auxis[d].c);
+        sketch.auxis[d].c = get_lc(d, sketch.auxis[d].w);
+        if (minl > sketch.auxis[d].c) {
+            minl = sketch.auxis[d].c;
+        }
+    }
+
+    if (minl >= minr) return;
+    ((minr - delta) <= minl) ? (minl = minr) : (minl += delta);
+
+    for (d = 0; d < sketch.left->D; ++d) {
+        if (sketch.auxis[d].c < minl) {
+            set_lc(d, sketch.auxis[d].w, minl);
         }
     }
     return;
@@ -268,4 +282,4 @@ size_t query(const unsigned char * str, size_t len)
     }
     return min;
 }
-#endif // SF5
+#endif // SFF
