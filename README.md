@@ -48,5 +48,7 @@ to get a uniform distributed workload with 10M operations on the 100K distinct i
 
 ## Other Sketches
 In folder `othersketchs`, we also implement 4 well known sketches (***CMCU sketch, CML sketch, CM sketch and C sketch***) which are used for comparing with our proposed ***SF sketch***. You can build thoses sketches by 
+
 	`cd [skech folder]; ./cmkae .; make`
+	
 Usage of thoses sketches is the same as ***SF sketch***.
