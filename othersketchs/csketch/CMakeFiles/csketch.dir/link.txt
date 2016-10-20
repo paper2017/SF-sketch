@@ -1,1 +1,0 @@
-/usr/bin/c++.exe   -std=c++98  -Wl,--enable-auto-import CMakeFiles/csketch.dir/sketch_config.cpp.o CMakeFiles/csketch.dir/BOBHash.cpp.o CMakeFiles/csketch.dir/countSketch.cpp.o CMakeFiles/csketch.dir/main.cpp.o  -o bin/csketch.exe -Wl,--out-implib,libcsketch.dll.a -Wl,--major-image-version,0,--minor-image-version,0  
