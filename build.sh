@@ -22,7 +22,7 @@ elif [ "$VERSION"V == SF6V ] || [ "$VERSION"V == V ];then
     cmake -DSF1=OFF -DSF2=OFF -DSF3=OFF -DSF4=OFF -DSF5=OFF -DSF6=ON .
 else
     echo "usage:  sh ./generate.sh [SF6|SF1|SF2|SF3|SF4|SF5]"
-    echo "ps: \"sh ./generage.sh\"  for SF6"
+    echo "ps: \"sh ./build.sh\"  for SF6"
     exit
 fi
 
