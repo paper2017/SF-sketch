@@ -1,0 +1,12 @@
+memcached.server=127.0.0.1
+memcached.port=11211
+# this is for kv, so 1 field only
+fieldcount=1
+# value length, let's do with 32byte values
+fieldlength=32
+# number of unique keys, 100K here
+recordcount=100000
+# number of queries, XXXK
+operationcount=5000000
+# distribution
+requestdistribution=uniform
