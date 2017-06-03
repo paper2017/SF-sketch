@@ -14,10 +14,12 @@ Our experimental results show that SF-sketch outperforms the most widely used CM
 
 
 ## Building
+We implement ***SF-sketch*** and 4 well known sketches (***CMCU sketch, A sketch, CM sketch and C sketch***) which are used for comparing with our proposed ***SF sketch***. You can build thoses sketches by 
 
-	$ cd ./fcsketch; cmake .;make
-    
-There is an example in `main.c`, which shows the basic usage of ***the SF-sketch***. 
+	cd [sketch folder]; ./cmkae .; make
+	  
+There is an example in `main.c`, which shows the basic usage of the corresponding sketch. 
+Type `[sketch folder]/bin/[sketch] -h` to show more information.
 
 NOTICE: CMake 3.1 or higher is required
 
@@ -42,9 +44,4 @@ Run YCSB command
 
 to get a uniform distributed workload with 10M operations on the 100K distinct items. Changing `requestdistribution=uniform` to `requestdistribution=zipfian`, we can get a zipfian distributed workload.
 
-## Other Sketches
-In folder `othersketchs`, we also implement 4 well known sketches (***CMCU sketch, CML sketch, CM sketch and C sketch***) which are used for comparing with our proposed ***SF sketch***. You can build thoses sketches by 
 
-	cd [sketch folder]; ./cmkae .; make
-	
-Usage of thoses sketches is the same as ***SF sketch***. Type `[sketch folder]/bin/[sketch] -h` to show more information.
