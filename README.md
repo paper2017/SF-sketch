@@ -30,18 +30,10 @@ NOTICE: CMake 3.1 or higher is required
 	$ sh ./experiment_on_aging.sh
 
 
-## Workloads Generation
+## Workloads specification
 To test the performance of sketches in different scenarios, we harness [YCSB](https://github.com/brianfrankcooper/YCSB.git) to generate two kinds of workloads: **uniform** and **skewed ([zipfian](https://en.wikipedia.org/wiki/Zipf%27s_law))**.
 We also use [memcached](https://github.com/memcached/memcached.git) and the generated workloads to record the real frequency of each item as benchmarks.
 After that, we feed the generated workloads to our proposed SF-sketch to record the estimation of itme frequency using the SF-sketch.
 Then, we calculate the average relative error and empirical cumulative distribution function (CDF) of relative error using benchmarks and estimations.
 To compare the accuracy with other well known sketches (such as Count-min (CM) sketch, conservative update (CU) sketch, etc.), we can use the same method to get the average relative error and CDF.
-
-Run YCSB command
-
-	bin/ycsb load basic -P workloads/workloadc -p fieldcount=1 -p fieldlength=32 -p recordcount=100000 -p operationcount=10000000 -p requestdistribution=uniform > workload/kv100K_op10M_uniform_init.raw
-	bin/ycsb run basic -P workloads/workloadc -p fieldcount=1 -p fieldlength=32 -p recordcount=100000 -p operationcount=10000000 -p requestdistribution=uniform > workload/kv100K_op10M_uniform_insert.raw
-
-to get a uniform distributed workload with 10M operations on the 100K distinct items. Changing `requestdistribution=uniform` to `requestdistribution=zipfian`, we can get a zipfian distributed workload.
-
 
