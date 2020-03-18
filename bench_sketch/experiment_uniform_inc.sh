@@ -15,11 +15,11 @@ DO_GEN=$8
 #sh experiment_uniform_inc.sh 5 40000 3 24 100 100 1 GEN 
 #sh experiment_uniform_inc.sh 5 40000 3 24 100 100 1 BEN
 
-#we create 100K items
-BASE_ITEMS_K=100
+#we create ${BASE_ITEMS_K}K items
+BASE_ITEMS_K=200
 BASE_OP_K=100
 BASE_OP=100000
-TEMPLET=./templets/kv100K_opXXXK_uniform.dat
+TEMPLET=./templets/kv${BASE_ITEMS_K}K_opXXXK_uniform.dat
 SETTING_DIR=./settings
 LOG_DIR=./workingsets
 REQ_DIR=./requests
@@ -63,14 +63,14 @@ if     [ "$#" -lt 7 ] || [ "$W" -lt 1 ] || [ "$D" -lt 1 ]\
     || [ "$K" -lt 1 ] || [ "${BITS_C}" -lt 1 ] || [ "${START}" -lt 1 ]\
     || [ "${END}" -lt "${START}" ] || [ "${DELTA}" -lt 1 ]
 then
-    echo -e We consider `RED 100K` items with frequents `RED "uniformly distributed"`
+    echo -e We consider `RED ${BASE_ITEMS_K}K` items with frequents `RED "uniformly distributed"`
     echo -e while in each experiment keep different frequent `RED INCREASED` by `COLOR DELTA``RED '(must > 0)'` from `COLOR START` to `COLOR END`
     echo -e on-chip, we use `COLOR W` buckets in each of the `COLOR D` tables, while using `COLOR BITS_C` bits to record the estimated value of frequent
     echo -e off-chip, we use `COLOR K*W` buckets in each of the `COLOR D` tables, while using `COLOR $LONG_BIT` bits to record the estimated value of frequent
     echo -e usage: ./experiment_uniform_inc.sh `COLOR D` `COLOR W` `COLOR K` `COLOR BITS_C` `COLOR START` `COLOR END` `COLOR DELTA`
     exit
 else
-    echo -e We experiment `COLOR 100K` items with frequents `RED "uniformly distributed"`
+    echo -e We experiment `COLOR ${BASE_ITEMS_K}K` items with frequents `RED "uniformly distributed"`
     echo -e while in each experiment keeping different frequent `RED INCREASED` by `COLOR $DELTA` from `COLOR $START` to `COLOR $END`
     echo -e on-chip, we use `COLOR $W` buckets in each of the `COLOR $D` tables, while using `COLOR $BITS_C` bits to record the estimated value of frequent
     echo -e off-chip, we use `COLOR $K*$W` buckets in each of the `COLOR $D` tables, while using `COLOR $LONG_BIT` bits to record the estimated value of frequent

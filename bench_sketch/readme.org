@@ -1,0 +1,23 @@
+* usage eg:
+sh ./ycsb_workload_gen.sh ./settings/kv1M_op1M_uniform.dat
+说明:
+数据集：./workingsets
+操作集/请求集：./requests
+查询结果/基准：./benchmarks
+
+
+
+
+* --deprecated--deprecated--deprecated--deprecated--deprecated--deprecated--deprecated--!!!
+** 打开服务器
+cd /opt/memcached-master/bin
+./memcached -m 1024 -p 11211 -t 1
+** 生成数据集，并统计得出每个item确切频度
+cd ~/liulingtong/others/bench_sketch
+sh ycsb_workload_gen.sh
+./bench_update_gen init_up < ./log/kv1M_op1M_uniform_init_up.dat
+./bench_update_gen inc-dec_up < ./log/kv1M_op1M_uniform_inc-dec_up.dat
+./bench_query_gen query < ./log/kv1M_op1M_uniform_query.dat
+./bench_client -s 127.0.0.1 -l init_up
+./bench_client -s 127.0.0.1 -l inc-dec_up
+./bench_client -s 127.0.0.1 -l query

@@ -144,10 +144,10 @@ echo Start Timming: ${START_TIMING}>> ${EXP_RESULT_FILE}
 REQUEST_SUBFILE_PRE=inc-dec_up
 ####################CREATE FCSKETCH.out, CMSKETCH.out etc...####################
 echo Sketch Name: SF Sketch>> ${EXP_RESULT_FILE}
-sketch_DIR=${CUR_DIR%/*}/fcsketch/bin
-sketch=${sketch_DIR}/fcsketch
+sketch_DIR=${CUR_DIR%/*}/sfsketch/bin
+sketch=${sketch_DIR}/sfsketch
 cd $sketch_DIR
-echo use workingset $SETTING_BASE to create fcsketch query result
+echo use workingset $SETTING_BASE to create sfsketch query result
 if [ -f $sketch ]
 then
     rm $sketch_DIR/${REQUEST_SUBFILE_PRE} $sketch_DIR/${QUERY}
@@ -163,7 +163,7 @@ then
     done;
     echo "  " >> ${EXP_RESULT_FILE}
 
-    mv $sketch_DIR/fcsketch.out $EXP_DIR/${SETTING_BASE}_${INC_DEC_UP}0_fcsketch.out
+    mv $sketch_DIR/sfsketch.out $EXP_DIR/${SETTING_BASE}_${INC_DEC_UP}0_sfsketch.out
 fi
 
 #exit

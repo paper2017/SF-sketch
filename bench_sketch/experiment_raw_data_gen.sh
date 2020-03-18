@@ -58,7 +58,7 @@ if [ "$OPT_ARG"A = uniformA ];then
 fi
 rm ${REQ_DIR}/${setting}_${INC_DEC_UP}
 
-/opt/memcached-master/bin/memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
+memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
 echo generate query operations
 ./bench_query_gen ${REQ_DIR}/${setting}_${QUERY} < ${LOG_DIR}/${setting}_${INIT}.dat
 echo generate init operations

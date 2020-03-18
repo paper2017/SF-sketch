@@ -1,25 +1,25 @@
 #!/bin/bash
 LONG_BIT=$(getconf LONG_BIT)
-D=$1
-W=$2
-K=$3
-BITS_C=$4
-START=$5
-END=$6
-DELTA=$7
-DO_TIME_TEST=$8
-DO_GEN=$8
+#we create ${BASE_ITEMS_K}K items
+BASE_ITEMS_K=$1
+D=$2
+W=$3
+K=$4
+BITS_C=$5
+START=$6
+END=$7
+DELTA=$8
+DO_TIME_TEST=$9
+DO_GEN=$9
 
 
-#sh experiment_zipf_inc.sh 5 40000 3 24 100 100 1 TIME
-#sh experiment_zipf_inc.sh 5 40000 3 24 100 100 1 GEN 
-#sh experiment_zipf_inc.sh 5 40000 3 24 100 100 1 BEN
+#sh experiment_zipf_inc.sh 100 5 40000 3 24 100 100 1 TIME
+#sh experiment_zipf_inc.sh 100 5 40000 3 24 100 100 1 GEN 
+#sh experiment_zipf_inc.sh 100 5 40000 3 24 100 100 1 BEN
 
-#we create 100K items
-BASE_ITEMS_K=100
 BASE_OP_K=100
 BASE_OP=100000
-TEMPLET=./templets/kv100K_opXXXK_zipf.dat
+TEMPLET=./templets/kvXXXK_opXXXK_zipf.dat
 SETTING_DIR=./settings
 LOG_DIR=./workingsets
 REQ_DIR=./requests
@@ -59,18 +59,18 @@ CLEAN(){
 }
 #################################
 
-if     [ "$#" -lt 7 ] || [ "$W" -lt 1 ] || [ "$D" -lt 1 ]\
+if     [ "$#" -lt 8 ] || [ "$W" -lt 1 ] || [ "$D" -lt 1 ]\
     || [ "$K" -lt 1 ] || [ "${BITS_C}" -lt 1 ] || [ "${START}" -lt 1 ]\
     || [ "${END}" -lt "${START}" ] || [ "${DELTA}" -lt 1 ]
 then
-    echo -e We consider `RED 100K` items with frequents obeying `RED "zipfian distribution"`
+    echo -e We consider `RED ${BASE_ITEMS_K}K` items with frequents obeying `RED "zipfian distribution"`
     echo -e while in each experiment keep different frequent `RED INCREASED` by `COLOR DELTA``RED '(must > 0)'` from `COLOR START` to `COLOR END`
     echo -e on-chip, we use `COLOR W` buckets in each of the `COLOR D` tables, while using `COLOR BITS_C` bits to record the estimated value of frequent
     echo -e off-chip, we use `COLOR K*W` buckets in each of the `COLOR D` tables, while using `COLOR $LONG_BIT` bits to record the estimated value of frequent
     echo -e usage: ./experiment_zipf_inc.sh `COLOR D` `COLOR W` `COLOR K` `COLOR BITS_C` `COLOR START` `COLOR END` `COLOR DELTA`
     exit
 else
-    echo -e We experiment `COLOR 100K` items with frequents obeying `RED "zipfian distribution"`
+    echo -e We experiment `COLOR ${BASE_ITEMS_K}K` items with frequents obeying `RED "zipfian distribution"`
     echo -e while in each experiment keeping different frequent `RED INCREASED` by `COLOR $DELTA` from `COLOR $START` to `COLOR $END`
     echo -e on-chip, we use `COLOR $W` buckets in each of the `COLOR $D` tables, while using `COLOR $BITS_C` bits to record the estimated value of frequent
     echo -e off-chip, we use `COLOR $K*$W` buckets in each of the `COLOR $D` tables, while using `COLOR $LONG_BIT` bits to record the estimated value of frequent
@@ -101,6 +101,8 @@ do
         rm $SETTING_FILE
     fi
     cp $TEMPLET $SETTING_FILE
+    $(sed -i "7s/XXXK/${BASE_ITEMS_K}K/" $SETTING_FILE)
+    $(sed -i "8s/XXX/${BASE_ITEMS_K}/" $SETTING_FILE)
     $(sed -i "9s/XXXK/${OP_K}K/" $SETTING_FILE)
     $(sed -i "10s/XXXK/$OP/" $SETTING_FILE)
 ####TEST BEGIN

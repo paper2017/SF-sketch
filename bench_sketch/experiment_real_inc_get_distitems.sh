@@ -114,7 +114,7 @@ echo use workingset $SETTING to create benchmark
 
 echo open memcached service
 
-/opt/memcached-master/bin/memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
+memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
 
 echo create benchmark
 

@@ -47,10 +47,10 @@ echo ------------------------------------------>> ${EXP_RESULT_FILE}
 echo  -d $D -w $W -k $K -b $BITS_C >>  ${EXP_RESULT_FILE}
 
 echo Sketch Name: SF Sketch>> ${EXP_RESULT_FILE}
-sketch_DIR=${CUR_DIR%/*}/fcsketch/bin
-sketch=${sketch_DIR}/fcsketch
+sketch_DIR=${CUR_DIR%/*}/sfsketch/bin
+sketch=${sketch_DIR}/sfsketch
 cd $sketch_DIR
-echo use workingset $setting to create fcsketch query result
+echo use workingset $setting to create sfsketch query result
 if [ -f $sketch ]
 then
     rm $sketch_DIR/${INC_DEC_UP} $sketch_DIR/${QUERY}
@@ -73,22 +73,89 @@ fi
 if [ "$ISREVERSE"a = reversea ];then
     for ((i=1;i<=$N_DELTA;i++))
     do
-        mv $sketch_DIR/fcsketch_${i}.out $EXP_DIR/${setting}_${i}_fcsketch.out
+        mv $sketch_DIR/sfsketch_${i}.out $EXP_DIR/${setting}_${i}_sfsketch.out
     done
     for ((i=$N_DELTA-1;i>=0;i--))
     do
-        mv $sketch_DIR/fcsketch_r_${i}.out $EXP_DIR/${setting}_r_${i}_fcsketch.out
+        mv $sketch_DIR/sfsketch_r_${i}.out $EXP_DIR/${setting}_r_${i}_sfsketch.out
     done
 else
-    mv $sketch_DIR/fcsketch.out $EXP_DIR/${setting}_fcsketch.out
+    mv $sketch_DIR/sfsketch.out $EXP_DIR/${setting}_sfsketch.out
     if [ "$ISREVERSE"a = throughputa ]; then
-        mv $sketch_DIR/throughput_fcsketch.out $EXP_DIR/${setting}_throughput_fcsketch.out
+        mv $sketch_DIR/throughput_sfsketch.out $EXP_DIR/${setting}_throughput_sfsketch.out
     fi
 fi
 
 if [ "$DO_TIME_TEST"a = AGINGa ];then
     exit
 fi
+
+cd $CUR_DIR
+
+echo ------------------------------------------
+echo New exp with CQF, temprarily exit.
+echo Sketch Name: CQFilter >> ${EXP_RESULT_FILE}
+sketch_DIR=${CUR_DIR%/*}/cqfilter/bin
+sketch=${sketch_DIR}/cqfilter
+cd $sketch_DIR
+
+echo Transforming configure from DWKB to FB for cqfilter
+BITS_NSLOTS_22=22
+BITS_REMAINDER_MIN=6
+BITS_REMAINDER=
+NUM_ITMES=100000
+LOAD_FACTOR=95
+NUM_SLOTS=
+CAPACITY=
+BLOATING_FACTOR=3
+SLOTS_PER_BLOCK=64
+QFBLOCK=17
+((NUM_SLOTS=$NUM_ITMES * $BLOATING_FACTOR * 100 / $LOAD_FACTOR))
+echo NUM_SLOTS is $NUM_SLOTS
+((CAPACITY=$D * $W * $BITS_C))
+echo CAPACITY is $CAPACITY
+#if (($NUM_SLOTS<$(echo "2^$BITS_NSLOTS_22" | bc -l))); then
+#    NUM_SLOTS=$(echo "2^$BITS_NSLOTS_22" | bc -l)
+#fi
+NUM_BLOCKS=
+((NUM_BLOCKS=($NUM_SLOTS + $SLOTS_PER_BLOCK - 1)/$SLOTS_PER_BLOCK))
+
+#if (($CAPACITY > $NUM_BLOCKS*($QFBLOCK * 8 + $SLOTS_PER_BLOCK * $BITS_REMAINDER_MIN))); then
+#    ((BITS_REMAINDER=($CAPACITY / $NUM_BLOCKS - $QFBLOCK * 8)/$SLOTS_PER_BLOCK ))
+#    BITS_NSLOTS=$(echo "l($NUM_SLOTS+1)/l(2)" | bc -l | sed "s/\..*//")
+#else
+    BITS_REMAINDER=$BITS_REMAINDER_MIN
+    ((NUM_SLOTS=($CAPACITY / ($QFBLOCK * 8 + $SLOTS_PER_BLOCK *$BITS_REMAINDER_MIN )) * $SLOTS_PER_BLOCK ))
+    BITS_NSLOTS=$(echo "l($NUM_SLOTS-1)/l(2)+1" | bc -l | sed "s/\..*//")
+#fi
+echo bits for slots is $BITS_NSLOTS
+echo bits for remainder is $BITS_REMAINDER
+if [ "$ISREVERSE"a != reversea ]
+then
+    echo use workingset $setting to create cqfilter query result
+    if [ -f $sketch ]
+    then
+        rm $sketch_DIR/${INC_DEC_UP} $sketch_DIR/${QUERY}
+        cp ${REQ_DIR}/${setting}_${INC_DEC_UP} ${REQ_DIR}/${setting}_${QUERY} $sketch_DIR
+        mv ${sketch_DIR}/${setting}_${INC_DEC_UP} $sketch_DIR/${INC_DEC_UP}
+        mv ${sketch_DIR}/${setting}_${QUERY} $sketch_DIR/${QUERY}
+        if [ "$ISREVERSE"a = throughputa ]; then
+            $sketch -f $BITS_NSLOTS -b $BITS_REMAINDER -t
+        else
+echo Insert Query>>  ${EXP_RESULT_FILE}
+        $sketch -f $BITS_NSLOTS -b $BITS_REMAINDER -e ${EXP_RESULT_FILE}  ${TIME_TEST_OPT}
+	echo "  " >> ${EXP_RESULT_FILE}
+        fi
+
+    fi
+    mv $sketch_DIR/cqfilter.out $EXP_DIR/${setting}_cqfilter.out
+    if [ "$ISREVERSE"a = throughputa ]; then
+        mv $sketch_DIR/throughput_cqfilter.out $EXP_DIR/${setting}_throughput_cqfilter.out
+    fi
+
+fi
+echo ------------------------------------------
+exit
 
 echo Sketch Name: CM Sketch>> ${EXP_RESULT_FILE}
 sketch_DIR=${CUR_DIR%/*}/cmsketch/bin

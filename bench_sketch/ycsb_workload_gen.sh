@@ -1,5 +1,7 @@
 #!/bin/bash
-YCSB_HOME=/opt/ycsb-0.5.0-SNAPSHOT
+#In ~/.bashrc add follows:
+#export YCSB_HOME=/home/vivian/opt/YCSB
+#export YCSB_BIN=$YCSB_HOME/bin/ycsb.sh
 LOG_DIR=./workingsets
 REQ_DIR=./requests
 DATABASE=basic
@@ -33,10 +35,10 @@ echo using setting file $setting to create workingsets
 echo using predefined workloadc to create transaction records for $setting with reads only
 
 echo generating ${setting}_${INIT}, the init update used before benchmark
-eval ${YCSB_HOME}/bin/ycsb load ${DATABASE} -P ${YCSB_HOME}/workloads/workloadc -P $setting_raw > ${LOG_DIR}/${setting}_${INIT}.dat
+${YCSB_BIN} load ${DATABASE} -P ${YCSB_HOME}/workloads/workloadc -P $setting_raw > ${LOG_DIR}/${setting}_${INIT}.dat
 
 echo generating ${setting}_${INC_DEC_UP}, the increase/decrease update used before benchmark
-eval ${YCSB_HOME}/bin/ycsb run ${DATABASE} -P ${YCSB_HOME}/workloads/workloadc -P $setting_raw > ${LOG_DIR}/${setting}_${INC_DEC_UP}.dat
+${YCSB_BIN} run ${DATABASE} -P ${YCSB_HOME}/workloads/workloadc -P $setting_raw > ${LOG_DIR}/${setting}_${INC_DEC_UP}.dat
 
 echo generating requests/operations
 
@@ -50,7 +52,7 @@ if [ "$OPT_ARG"A = uniformA ];then
 fi
 rm ${REQ_DIR}/${setting}_${INC_DEC_UP}
 
-/opt/memcached-master/bin/memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
+memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
 echo generate query operations
 ./bench_query_gen ${REQ_DIR}/${setting}_${QUERY} < ${LOG_DIR}/${setting}_${INIT}.dat
 echo generate init operations
@@ -71,7 +73,7 @@ if [ "$OPT_ARG"A = uniformA ];then
             echo generate operations for uniform frequent : $i
             counter=$(sed -n '2p' $CHECK_FILE )
             echo $counter items have satisfy uniform-frequent requirement
-            eval ${YCSB_HOME}/bin/ycsb run ${DATABASE} -P ${YCSB_HOME}/workloads/workloadc -P $setting_raw $p1 $p2 $p3 $status > ${LOG_DIR}/${setting}_${INC_DEC_UP}.dat
+            eval ${YCSB_BIN} run ${DATABASE} -P ${YCSB_HOME}/workloads/workloadc -P $setting_raw $p1 $p2 $p3 $status > ${LOG_DIR}/${setting}_${INC_DEC_UP}.dat
             ./bench_update_gen -o ${REQ_DIR}/${setting}_${INC_DEC_UP} -i ${LOG_DIR}/${setting}_${INC_DEC_UP}.dat -c ${REQ_DIR}/${setting}_${QUERY} -a
         fi
     done

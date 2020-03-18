@@ -11,7 +11,7 @@
 
 //#define UNIFORM_OPERATE 1
 
-#ifndef FC_V1
+#ifndef SF_V1
 #define BITS_DELTA  0
 #define ZERO_DELTA  0   //for inc
 //#define ZERO_DELTA  4 //for dec//tmp

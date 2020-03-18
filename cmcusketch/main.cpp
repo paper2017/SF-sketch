@@ -1,6 +1,6 @@
 #include <getopt.h>
 #include "cmcusketch.h"
-#include "../bench_sketch/bench_common.h"
+#include "bench_common.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>

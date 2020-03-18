@@ -142,7 +142,7 @@ echo use workingset $SETTING_BASE to create benchmark
 
 echo open memcached service
 
-/opt/memcached-master/bin/memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
+memcached -d -P $PIDFILE -m 1024 -p 11211 -t 1
 
 echo create benchmark
 
@@ -173,10 +173,10 @@ echo  REAL INC -d $D -w $W -k $K -b $BITS_C >>  ${EXP_RESULT_FILE}
 
 REQUEST_SUBFILE_PRE=inc-dec_up
 ####################CREATE FCSKETCH.out, CMSKETCH.out etc...####################
-sketch_DIR=${CUR_DIR%/*}/fcsketch/bin
-sketch=${sketch_DIR}/fcsketch
+sketch_DIR=${CUR_DIR%/*}/sfsketch/bin
+sketch=${sketch_DIR}/sfsketch
 cd $sketch_DIR
-echo use workingset $SETTING_BASE to create fcsketch query result
+echo use workingset $SETTING_BASE to create sfsketch query result
 if [ -f $sketch ]
 then
     rm $sketch_DIR/${REQUEST_SUBFILE_PRE} $sketch_DIR/${QUERY}
@@ -190,11 +190,11 @@ then
         mv ${sketch_DIR}/${SETTING} $sketch_DIR/${REQUEST_SUBFILE_PRE}$j
     done
     $sketch -d $D -w $W -k $K -b $BITS_C -n $j -e ${EXP_RESULT_FILE}
-    mv $sketch_DIR/fcsketch.out $EXP_DIR/${SETTING_BASE}_${INC_DEC_UP}0_fcsketch.out
+    mv $sketch_DIR/sfsketch.out $EXP_DIR/${SETTING_BASE}_${INC_DEC_UP}0_sfsketch.out
     for ((i=$START,j=0;i<$END;i+=$DELTA));do
         ((j++))
         CHSETTING $DELTA ${INC_DEC_UP}$i
-        mv $sketch_DIR/fcsketch$j.out $EXP_DIR/${SETTING}_fcsketch.out
+        mv $sketch_DIR/sfsketch$j.out $EXP_DIR/${SETTING}_sfsketch.out
         rm $sketch_DIR/${REQUEST_SUBFILE_PRE}$j
     done
 fi

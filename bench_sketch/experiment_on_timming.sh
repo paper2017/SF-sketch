@@ -6,7 +6,7 @@ do
 	for ((i=1;i<=1;i++))
 	do
 	   ((w= 40000))
-	   echo sh experiment_uniform_inc.sh 4 ${w} 4 32 100 100 1 TIME
+	   echo sh experiment_uniform_inc.sh 4 ${w} 4 32 100 100 1 AGING
 	   sh experiment_uniform_inc.sh 4 ${w} 4 24 100 100 1 TIME
 	done
 done
