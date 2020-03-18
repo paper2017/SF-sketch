@@ -37,4 +37,3 @@ After that, we feed the generated workloads to our proposed SF-sketch to record 
 Then, we calculate the average relative error and empirical cumulative distribution function (CDF) of relative error using benchmarks and estimations.
 To compare the accuracy with other well known sketches (such as Count-min (CM) sketch, conservative update (CU) sketch, etc.), we can use the same method to get the average relative error and CDF.
 
-#for test
